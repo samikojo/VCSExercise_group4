@@ -6,11 +6,13 @@ namespace TAMK.VCSExample
 	{
         [SerializeField]
         private float _jumpForce;
+        protected const string horAxis = "Horizontal";
+        protected const string verAxis = "Vertical";
 
         private bool _isOnGround;
+        private Vector3 moveVector;
 
         private Rigidbody _rb;
-
         private float _cubeYRotation;
 
         private void Start()
@@ -21,6 +23,9 @@ namespace TAMK.VCSExample
 
         void Update()
 		{
+            moveVector = GetMovement();
+            transform.Translate(moveVector);
+
             if (Input.GetKey(KeyCode.Q))
             {
                 RotateCube(-90f);
@@ -57,18 +62,14 @@ namespace TAMK.VCSExample
             transform.rotation = Quaternion.Euler(0f, _cubeYRotation, 0f);
         }
 
+        private Vector3 GetMovement()
+        {
+            float horizontal = Input.GetAxis(horAxis);
+            float vertical = Input.GetAxis(verAxis);
 
-		private void OnCollisionEnter(Collision other){
-			if (other.gameObject.name == "Plane") {
-				_isOnGround = true;
-			}
-		}
-		/*
-		private void OnCollisionStay(Collision other){
-			if (!_isOnGround && other.gameObject.name == "Plane") {
-				_isOnGround = true;
-			}
-		}
-		*/
+            Vector3 newVector = new Vector3(horizontal, 0, vertical);
+
+            return newVector;
+        }
 	}
 }
