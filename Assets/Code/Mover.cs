@@ -19,6 +19,7 @@ namespace TAMK.VCSExample
         {
             _cubeYRotation = transform.rotation.y;
             _rb = gameObject.GetComponent<Rigidbody>();
+            _isOnGround = true;
         }
 
         void Update()
@@ -64,12 +65,17 @@ namespace TAMK.VCSExample
 
         private Vector3 GetMovement()
         {
-            float horizontal = Input.GetAxis(horAxis);
-            float vertical = Input.GetAxis(verAxis);
+            float horizontal = Input.GetAxis(horAxis) / 10f;
+            float vertical = Input.GetAxis(verAxis) / 10f;
 
             Vector3 newVector = new Vector3(horizontal, 0, vertical);
 
             return newVector;
         }
-	}
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            _isOnGround = true;
+        }
+    }
 }
